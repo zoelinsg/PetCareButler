@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}主人資料{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="d-flex align-items-end justify-content-between gap-3 mb-3">
+      <div>
+        <h1 class="h4 fw-semibold mb-1">主人資料</h1>
+      </div>
+      <a class="btn btn-outline-secondary btn-sm" href="{% url 'password_change' %}">修改密碼</a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <form method="post" action="{% url 'user-profile' %}" novalidate>
+          {% csrf_token %}
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="id_phone">電話</label>
+              <input type="text" class="form-control" name="phone" id="id_phone"
+                     value="{{ form.phone.value|default_if_none:'' }}" maxlength="15" autocomplete="tel">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label" for="id_gender">性別</label>
+              <select class="form-select" name="gender" id="id_gender">
+                <option value="">選擇性別</option>
+                {% for choice in form.gender.field.choices %}
+                  <option value="{{ choice.0 }}" {% if form.gender.value == choice.0 %}selected{% endif %}>
+                    {{ choice.1 }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="id_address">地址</label>
+              <textarea class="form-control" name="address" id="id_address" rows="2"
+                        autocomplete="street-address">{{ form.address.value|default_if_none:'' }}</textarea>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="id_bio">簡介</label>
+              <textarea class="form-control" name="bio" id="id_bio" rows="3">{{ form.bio.value|default_if_none:'' }}</textarea>
+            </div>
+
+            <div class="col-12 d-flex justify-content-end mt-2">
+              <button type="submit" class="btn btn-primary">儲存變更</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
