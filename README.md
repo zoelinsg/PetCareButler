@@ -1,63 +1,113 @@
-# PetCareButler
-Multi-pet care tracker with Gemini.
-
 # Pet Care
 
-環境部署
-# 安裝 poetry
+- 以 Django Template 為主的寵物照護管理專案，包含寵物資料、日常紀錄、開支紀錄、相片管理，以及資料爬取與搜尋等功能。
+
+---
+
+## 專案環境與工具
+
+- Python：建議 3.12+
+- 套件管理：Poetry
+- Web Framework：Django
+- 其他套件：pillow、requests
+
+---
+
+## 環境部署
+
+### 安裝 Poetry
+```bash
 pip install poetry
+```
 
-# 初始化專案並建立環境
-poetry config virtualenvs.in-project true
+### 初始化專案並建立虛擬環境
+```bash
 poetry init
+poetry install
 poetry shell
-poetry env use python
+```
 
-# 安裝 Django
+### 安裝 Django 與常用套件
+```bash
 poetry add django
-
-# 安裝套件
 poetry add pillow requests
+```
 
-# 創建 Django 專案
+### 建立 Django 專案與 Apps
+#### 建立 Django 專案
+```bash
 django-admin startproject core .
-
-# 創建 App
+```
+#### 建立 Apps
+```bash
 python manage.py startapp users
 python manage.py startapp datahub
-
-# 建立超級使用者
+python manage.py startapp photos
+python manage.py startapp pets
+python manage.py startapp records
+python manage.py startapp expenses
+```
+#### 資料庫與啟動
+- 建立超級使用者
+```bash
 python manage.py createsuperuser
-
-# 生成遷移檔案
+```
+- 建立遷移檔案
+```bash
 python manage.py makemigrations
+```
 
-# 執行資料庫遷移
+- 執行資料庫遷移
+```bash
 python manage.py migrate
-
-# 啟動開發伺服器
+```
+- 啟動開發伺服器
+```bash
 python manage.py runserver
+```
 
-# 靜態資料存放 static 資料夾
+---
 
-# Django templates html 
+#### 專案功能
+- 使用者註冊
+- 使用者登入
+- 使用者登出
+- 查看主人資料
+- 修改主人資料
+- 忘記密碼
+- 忘記密碼郵件
+- 密碼重置
 
-# 專案功能
-使用者註冊
-使用者登入
-使用者登出
-查看主人資料
-修改主人資料
-忘記密碼
-忘記密碼郵件
-密碼重置
+- 爬取動物認領養資料
+- 爬取動物遺失啟示資料
+- 爬取公立收容所資料
+- 爬取動保單位資料
 
-爬取動物認領養資料
-爬取動物遺失啟示資料
-爬取公立收容所資料
-爬取動保單位資料
+- 關鍵字搜尋動物認領養資料
+- 關鍵字搜尋動物遺失啟示資料
+- 關鍵字搜尋公立收容所資料
+- 關鍵字搜尋動保單位資料
 
-關鍵字搜尋動物認領養資料
-關鍵字搜尋動物遺失啟示資料
-關鍵字搜尋公立收容所資料
-關鍵字搜尋動保單位資料
+- 相片列表查看
+- 相片詳情查看
+- 相片新增
+- 相片刪除
+- 相片修改
+
+- 寵物資料新增
+- 寵物資料刪除
+- 寵物資料修改
+- 寵物資料查看
+- 寵物列表查看
+
+- 日常生活記錄新增
+- 日常生活記錄刪除
+- 日常生活記錄修改
+- 日常生活紀錄列表查看
+- 日常生活紀錄詳情查看
+
+- 日常開支記錄新增
+- 日常開支記錄刪除
+- 日常開支記錄修改
+- 日常開支紀錄列表查看
+- 日常開支紀錄詳情查看

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}新增寵物{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-10 col-lg-8">
+
+    <div class="d-flex justify-content-between align-items-end mb-3">
+      <div>
+        <h1 class="h4 fw-semibold mb-1">新增寵物</h1>
+        <div class="text-muted small">建立寵物基本資料與頭像</div>
+      </div>
+      <a class="btn btn-outline-secondary btn-sm" href="{% url 'pets_list' %}">回列表</a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+
+          {% for field in form %}
+            {% if field.is_hidden %}
+              {{ field }}
+
+            {% elif field.name == "is_neutered" %}
+              <div class="mb-4">
+                <label class="form-label fw-semibold d-block">健康資訊</label>
+
+                <div class="form-check form-switch">
+                  {{ field }}
+                  <label class="form-check-label fw-semibold" for="{{ field.id_for_label }}">
+                    是否結紮
+                  </label>
+                </div>
+
+                {% if field.help_text %}
+                  <div class="form-text">{{ field.help_text }}</div>
+                {% else %}
+                  <div class="form-text">可先不確定，之後再修改。</div>
+                {% endif %}
+
+                {% for error in field.errors %}
+                  <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+            {% else %}
+              <div class="mb-3">
+                <label class="form-label fw-semibold">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                  <div class="form-text">{{ field.help_text }}</div>
+                {% endif %}
+                {% for error in field.errors %}
+                  <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">儲存</button>
+            <a class="btn btn-outline-secondary" href="{% url 'pets_list' %}">取消</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

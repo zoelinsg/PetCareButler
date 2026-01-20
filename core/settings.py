@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'rest_framework', # 加入 Django REST framework
     'users',
     'datahub',
+    'photos',
+    'pets',
+    'records',
+    'expenses',
 ]
 
 MIDDLEWARE = [
@@ -123,6 +127,12 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+# 媒體文件配置
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 郵件設置（使用 Gmail 作為 SMTP 伺服器）
@@ -138,6 +148,7 @@ LOGIN_URL = '/accounts/login/'  # 指定預設登入頁面
 LOGIN_REDIRECT_URL = '/'  # 指定登入成功後的重定向頁面
 LOGOUT_REDIRECT_URL = '/'  # 指定登出成功後的重定向頁面
 
+# 快取設定
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",

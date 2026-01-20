@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ pet.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+
+    <div class="d-flex justify-content-between align-items-end mb-3">
+      <div>
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <h1 class="h4 fw-semibold mb-1">{{ pet.name }}</h1>
+
+          {% if pet.is_deceased %}
+            <span class="badge text-bg-secondary">當天使</span>
+          {% else %}
+            <span class="badge text-bg-success">活著</span>
+          {% endif %}
+
+          {% if pet.is_neutered %}
+            <span class="badge text-bg-success">已結紮</span>
+          {% else %}
+            <span class="badge text-bg-light text-dark border">未結紮</span>
+          {% endif %}
+        </div>
+
+        <div class="text-muted small">
+          {{ pet.get_species_display }}
+          {% if pet.gender %} · {{ pet.get_gender_display }}{% endif %}
+          {% if pet.breed %} · {{ pet.breed }}{% endif %}
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-primary btn-sm" href="{% url 'pets_edit' pet.pk %}">編輯</a>
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'pets_list' %}">回列表</a>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex flex-column flex-md-row gap-3 align-items-md-center">
+          <img
+            src="{% if pet.avatar %}{{ pet.avatar.url }}{% else %}{% static 'images/avatar.jpg' %}{% endif %}"
+            alt="{{ pet.name }}"
+            class="rounded-circle border"
+            style="width:96px;height:96px;object-fit:cover;"
+            onerror="this.onerror=null;this.src='{% static 'images/avatar.jpg' %}';"
+          >
+
+          <div class="flex-grow-1">
+            <div class="row g-3 small">
+
+              <div class="col-12 col-md-6">
+                <div class="text-muted">晶片</div>
+                <div class="fw-semibold">{% if pet.pet_chip %}{{ pet.pet_chip }}{% else %}—{% endif %}</div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <div class="text-muted">生日</div>
+                <div class="fw-semibold">{% if pet.birth_date %}{{ pet.birth_date }}{% else %}—{% endif %}</div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <div class="text-muted">是否結紮</div>
+                <div class="fw-semibold">{% if pet.is_neutered %}是{% else %}否{% endif %}</div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <div class="text-muted">狀態</div>
+                <div class="fw-semibold">{% if pet.is_deceased %}當天使{% else %}活著{% endif %}</div>
+              </div>
+
+              <div class="col-12">
+                <div class="text-muted">特徵</div>
+                <div class="fw-semibold">{% if pet.features %}{{ pet.features }}{% else %}—{% endif %}</div>
+              </div>
+
+              <div class="col-12">
+                <div class="text-muted">備註</div>
+                <div class="fw-semibold">{% if pet.remark %}{{ pet.remark }}{% else %}—{% endif %}</div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

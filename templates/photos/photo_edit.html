@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}編輯相片{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+
+    <div class="d-flex justify-content-between align-items-end mb-3">
+      <div>
+        <h1 class="h4 fw-semibold mb-1">編輯相片</h1>
+        <div class="text-muted small">更新照片資訊</div>
+      </div>
+      <a class="btn btn-outline-secondary btn-sm" href="{% url 'photo_detail' object.pk %}">回相片</a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <div class="row g-4">
+          <div class="col-12 col-lg-5">
+            <div class="text-muted small mb-2">目前圖片</div>
+            <img src="{{ object.image.url }}" class="w-100 rounded"
+                 style="height: 340px; object-fit: cover; background:#f8f9fa;" alt="{{ object.title }}">
+          </div>
+
+          <div class="col-12 col-lg-7">
+            <form method="post" enctype="multipart/form-data" novalidate>
+              {% csrf_token %}
+
+              {% for field in form %}
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">{{ field.label }}</label>
+                  {{ field }}
+
+                  {% if field.name == "image" %}
+                    <div class="form-text">若不更換圖片可留空</div>
+                  {% endif %}
+
+                  {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                  {% endif %}
+                  {% for error in field.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endfor %}
+
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">保存變更</button>
+                <a href="{% url 'photo_detail' object.pk %}" class="btn btn-outline-secondary">取消</a>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

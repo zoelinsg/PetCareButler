@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}開支紀錄{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-3">
+      <div>
+        <h1 class="h4 fw-semibold mb-1">開支紀錄</h1>
+        <div class="text-muted small">記錄每日支出</div>
+      </div>
+
+      <form method="get" class="row g-2 align-items-end flex-grow-1 justify-content-lg-end" style="max-width: 980px;">
+        <div class="col-12 col-md-2 col-lg-2">
+          <label class="form-label small text-muted mb-1">寵物（可不選）</label>
+          <select name="pet" class="form-select form-select-sm">
+            <option value="">全部</option>
+            {% for p in pets %}
+              <option value="{{ p.id }}" {% if pet|stringformat:"s" == p.id|stringformat:"s" %}selected{% endif %}>
+                {{ p.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-12 col-md-2 col-lg-2">
+          <label class="form-label small text-muted mb-1">分類</label>
+          <select name="category" class="form-select form-select-sm">
+            <option value="">全部</option>
+            {% for value, label in categories %}
+              <option value="{{ value }}" {% if category == value %}selected{% endif %}>
+                {{ label }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-6 col-md-2 col-lg-2">
+          <label class="form-label small text-muted mb-1">開始</label>
+          <input type="date" name="start" value="{{ start }}" class="form-control form-control-sm">
+        </div>
+
+        <div class="col-6 col-md-2 col-lg-2">
+          <label class="form-label small text-muted mb-1">結束</label>
+          <input type="date" name="end" value="{{ end }}" class="form-control form-control-sm">
+        </div>
+
+        <div class="col-12 col-md-2 col-lg-2">
+          <label class="form-label small text-muted mb-1">搜尋</label>
+          <input type="text" name="q" value="{{ q|default:'' }}" class="form-control form-control-sm" placeholder="備註 / 店家 / 分類">
+        </div>
+
+        <div class="col-6 col-md-1 col-lg-1 d-grid">
+          <label class="form-label small text-muted mb-1 d-none d-md-block">&nbsp;</label>
+          <button class="btn btn-primary btn-sm" type="submit">搜尋</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <div class="text-muted small">
+          {% if total_amount %}目前篩選總額：<span class="fw-semibold">{{ total_amount }}</span>{% else %}目前篩選總額：<span class="fw-semibold">0</span>{% endif %}
+        </div>
+        <a class="btn btn-primary btn-sm" href="{% url 'expense_create' %}">新增開支</a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+          <thead class="table-light">
+            <tr>
+              <th style="min-width:120px;">日期</th>
+              <th style="min-width:140px;">分類</th>
+              <th style="min-width:120px;">金額</th>
+              <th style="min-width:140px;">寵物</th>
+              <th>備註</th>
+              <th class="text-end" style="min-width:140px;">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in expenses %}
+              <tr>
+                <td class="fw-semibold">{{ e.date|date:"Y/m/d" }}</td>
+                <td>{{ e.get_category_display }}</td>
+                <td class="fw-semibold">{{ e.amount }}</td>
+                <td>{% if e.pet %}{{ e.pet.name }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+                <td class="text-muted">{% if e.notes %}{{ e.notes|truncatechars:50 }}{% else %}—{% endif %}</td>
+                <td class="text-end">
+                  <div class="btn-group btn-group-sm" role="group">
+                    <a class="btn btn-outline-primary" href="{% url 'expense_update' e.pk %}">編輯</a>
+                    <a class="btn btn-outline-danger" href="{% url 'expense_delete' e.pk %}">刪除</a>
+                  </div>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="6" class="text-center text-muted py-5">目前沒有符合條件的開支紀錄</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}寵物列表{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-2">
+      <div>
+        <h1 class="h4 fw-semibold mb-1">寵物列表</h1>
+        <div class="text-muted small">管理你的寵物基本資料與頭像</div>
+      </div>
+
+      <form method="get" class="row g-2 align-items-end flex-grow-1 justify-content-lg-end" style="max-width: 920px;">
+        <input type="hidden" name="status" value="{{ status|default:'alive' }}">
+
+        <div class="col-12 col-md-8 col-lg-8">
+          <label class="form-label small text-muted mb-1">搜尋</label>
+          <input
+            class="form-control form-control-sm"
+            name="q"
+            value="{{ q }}"
+            placeholder="搜尋：名字 / 品種 / 晶片 / 特徵"
+          >
+        </div>
+
+        <div class="col-6 col-md-2 col-lg-2 d-grid">
+          <label class="form-label small text-muted mb-1 d-none d-md-block">&nbsp;</label>
+          <button class="btn btn-primary btn-sm" type="submit">搜尋</button>
+        </div>
+
+        <div class="col-6 col-md-2 col-lg-2 d-grid">
+          <label class="form-label small text-muted mb-1 d-none d-md-block">&nbsp;</label>
+          {% if status != "deceased" %}
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'pets_add' %}">新增寵物</a>
+          {% else %}
+            <button class="btn btn-outline-primary btn-sm" type="button" disabled>新增寵物</button>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+
+    <div class="mb-3">
+      <div class="nav nav-pills gap-2">
+        <a class="nav-link {% if status == 'alive' %}active{% endif %}"
+           href="?status=alive{% if q %}&q={{ q }}{% endif %}">
+          活著
+        </a>
+        <a class="nav-link {% if status == 'deceased' %}active{% endif %}"
+           href="?status=deceased{% if q %}&q={{ q }}{% endif %}">
+          當天使
+        </a>
+        <a class="nav-link {% if status == 'all' %}active{% endif %}"
+           href="?status=all{% if q %}&q={{ q }}{% endif %}">
+          全部
+        </a>
+      </div>
+    </div>
+
+    {% if pets %}
+      <div class="row g-3">
+        {% for pet in pets %}
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0 h-100">
+              <div class="card-body">
+                <div class="d-flex gap-3 align-items-center">
+                  <img
+                    src="{% if pet.avatar %}{{ pet.avatar.url }}{% else %}{% static 'images/avatar.jpg' %}{% endif %}"
+                    alt="{{ pet.name }}"
+                    class="rounded-circle border"
+                    style="width:72px;height:72px;object-fit:cover;"
+                    onerror="this.onerror=null;this.src='{% static 'images/avatar.jpg' %}';"
+                  >
+
+                  <div class="flex-grow-1">
+                    <div class="fw-semibold d-flex flex-wrap align-items-center gap-2">
+                      <span>{{ pet.name }}</span>
+
+                      {% if pet.is_deceased %}
+                        <span class="badge text-bg-secondary">當天使</span>
+                      {% endif %}
+
+                      {% if pet.is_neutered %}
+                        <span class="badge text-bg-success">已結紮</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="text-muted small">
+                      {{ pet.get_species_display }}
+                      {% if pet.gender %} · {{ pet.get_gender_display }}{% endif %}
+                      {% if pet.breed %} · {{ pet.breed }}{% endif %}
+                    </div>
+
+                    <div class="text-muted small mt-2">
+                      {% if pet.pet_chip %}晶片：{{ pet.pet_chip }}{% else %}晶片：—{% endif %}
+                      <br>
+                      {% if pet.birth_date %}生日：{{ pet.birth_date }}{% else %}生日：—{% endif %}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-3">
+                  <a class="btn btn-primary btn-sm" href="{% url 'pets_detail' pet.pk %}">查看</a>
+                  <a class="btn btn-outline-primary btn-sm" href="{% url 'pets_edit' pet.pk %}">編輯</a>
+                  <a class="btn btn-outline-danger btn-sm" href="{% url 'pets_delete' pet.pk %}">刪除</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+          <div class="text-muted mb-2">
+            {% if status == "deceased" %}
+              目前沒有「當天使」的寵物資料
+            {% elif status == "all" %}
+              目前沒有任何寵物資料
+            {% else %}
+              目前沒有符合條件的寵物資料
+            {% endif %}
+          </div>
+
+          {% if status != "deceased" %}
+            <a class="btn btn-primary" href="{% url 'pets_add' %}">
+              {% if status == "all" %}新增第一隻寵物{% else %}新增寵物{% endif %}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

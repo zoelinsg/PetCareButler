@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}編輯寵物{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-10 col-lg-8">
+
+    <div class="d-flex justify-content-between align-items-end mb-3">
+      <div>
+        <h1 class="h4 fw-semibold mb-1">編輯寵物</h1>
+        <div class="text-muted small">更新寵物資料與頭像</div>
+      </div>
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'pets_detail' object.pk %}">回詳細</a>
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'pets_list' %}">回列表</a>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+
+          {% for field in form %}
+            {% if field.name == "is_deceased" %}
+              <div class="mb-4">
+                <label class="form-label fw-semibold d-block">狀態</label>
+
+                <div class="form-check form-switch">
+                  {{ field }}
+                  <label class="form-check-label fw-semibold" for="{{ field.id_for_label }}">
+                    是否過世（當天使）
+                  </label>
+                </div>
+
+                <div class="form-text">
+                  這個狀態可隨時切換。為避免誤觸，切換時會跳出確認。
+                </div>
+
+                {% for error in field.errors %}
+                  <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+            {% elif field.name == "is_neutered" %}
+              <div class="mb-4">
+                <label class="form-label fw-semibold d-block">健康資訊</label>
+
+                <div class="form-check form-switch">
+                  {{ field }}
+                  <label class="form-check-label fw-semibold" for="{{ field.id_for_label }}">
+                    是否結紮
+                  </label>
+                </div>
+
+                {% if field.help_text %}
+                  <div class="form-text">{{ field.help_text }}</div>
+                {% else %}
+                  <div class="form-text">可不填或之後再修改。</div>
+                {% endif %}
+
+                {% for error in field.errors %}
+                  <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+            {% elif field.is_hidden %}
+              {{ field }}
+
+            {% else %}
+              <div class="mb-3">
+                <label class="form-label fw-semibold">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                  <div class="form-text">{{ field.help_text }}</div>
+                {% endif %}
+                {% for error in field.errors %}
+                  <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">更新</button>
+            <a class="btn btn-outline-secondary" href="{% url 'pets_detail' object.pk %}">取消</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function () {
+    const checkbox = document.querySelector('input[name="is_deceased"]');
+    if (!checkbox) return;
+
+    let last = checkbox.checked;
+    checkbox.addEventListener("change", function () {
+      const msg = checkbox.checked
+        ? "確定要把這隻寵物標記為「當天使」嗎？（仍可之後再改回）"
+        : "確定要把這隻寵物改回「活著」嗎？";
+
+      if (!confirm(msg)) {
+        checkbox.checked = last;
+        return;
+      }
+      last = checkbox.checked;
+    });
+  })();
+</script>
+{% endblock %}
