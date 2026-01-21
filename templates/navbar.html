@@ -43,30 +43,38 @@
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            健康管理
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-              <a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">
-                醫療行事曆（開發中）
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">
-                儀表板（開發中）
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             相片管理
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="{% url 'photo_list' %}">相片列表</a></li>
             <li><a class="dropdown-item" href="{% url 'upload_photos' %}">新增相片</a></li>
           </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            行程管理
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="{% url 'month' %}">行事曆</a></li>
+            <li><a class="dropdown-item" href="{% url 'create' %}">新增行程</a></li>
+
+            <li>
+              <a class="dropdown-item d-flex justify-content-between align-items-center"
+                href="{% url 'planner_reminders' %}">
+                提醒
+                {% if reminder_count|default:0 > 0 %}
+                  <span class="badge text-bg-danger">{{ reminder_count }}</span>
+                {% endif %}
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
+            儀表板（開發中）
+          </a>
         </li>
 
         <li class="nav-item dropdown">
@@ -96,7 +104,7 @@
           </li>
         {% else %}
           <li class="nav-item ms-lg-2">
-            <a class="btn btn-outline-primary btn-sm" href="{% url 'register' %}">註冊</a>            
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'register' %}">註冊</a>
             <a class="btn btn-outline-primary btn-sm" href="{% url 'login' %}">登入</a>
           </li>
         {% endif %}

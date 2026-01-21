@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}行事曆{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-2 mb-3">
+      <div>
+        <h1 class="h4 fw-semibold mb-1">行事曆</h1>
+        <div class="text-muted small">{{ year }}/{{ month|stringformat:"02d" }}</div>
+      </div>
+
+      <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-outline-secondary btn-sm" href="?year={{ prev_year }}&month={{ prev_month }}">上一月</a>
+        <a class="btn btn-outline-secondary btn-sm" href="?year={{ next_year }}&month={{ next_month }}">下一月</a>
+
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'planner_reminders' %}">
+          提醒
+          {% if reminder_count|default:0 > 0 %}
+            <span class="badge text-bg-danger ms-1">{{ reminder_count }}</span>
+          {% endif %}
+        </a>
+
+        <a class="btn btn-primary btn-sm" href="{% url 'create' %}">新增事件</a>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-bordered mb-0 align-middle">
+            <thead class="table-light">
+              <tr class="text-center small">
+                <th class="py-2">一</th>
+                <th class="py-2">二</th>
+                <th class="py-2">三</th>
+                <th class="py-2">四</th>
+                <th class="py-2">五</th>
+                <th class="py-2">六</th>
+                <th class="py-2">日</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for week in weeks %}
+                <tr>
+                  {% for cell in week %}
+                    {% with d=cell.date %}
+                    <td class="p-2" style="min-width: 150px; height: 140px;">
+                      <div class="d-flex justify-content-between align-items-start mb-1">
+                        <div class="small fw-semibold {% if not cell.in_month %}text-muted{% endif %}">
+                          {{ d.day }}
+                          {% if d == today %}
+                            <span class="badge text-bg-primary ms-1">今天</span>
+                          {% endif %}
+                        </div>
+
+                        <a class="btn btn-outline-secondary btn-sm py-0 px-2"
+                           href="{% url 'day' d.year d.month d.day %}">查看</a>
+                      </div>
+
+                      {% if cell.events %}
+                        <ul class="list-unstyled mb-0 small">
+                          {% for e in cell.events|slice:":3" %}
+                            <li class="mb-1">
+                              <a class="text-decoration-none" href="{% url 'detail' e.pk %}">
+                                <span class="badge text-bg-light border me-1">{{ e.get_type_display }}</span>
+                                <span class="{% if e.status == 'done' %}text-decoration-line-through text-muted{% endif %}">
+                                  {{ e.title }}
+                                </span>
+                              </a>
+                            </li>
+                          {% endfor %}
+
+                          {% if cell.events|length > 3 %}
+                            <li class="text-muted">…還有 {{ cell.events|length|add:"-3" }} 筆</li>
+                          {% endif %}
+                        </ul>
+                      {% else %}
+                        <div class="text-muted small">—</div>
+                      {% endif %}
+                    </td>
+                    {% endwith %}
+                  {% endfor %}
+                </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

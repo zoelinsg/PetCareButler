@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}{{ day|date:"Y/m/d" }} 行程{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-2 mb-3">
+      <div>
+        <h1 class="h4 fw-semibold mb-1">當日行程</h1>
+        <div class="text-muted small">{{ day|date:"Y/m/d (D)" }}</div>
+      </div>
+
+      <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-outline-secondary btn-sm"
+           href="{% url 'month' %}?year={{ day|date:'Y' }}&month={{ day|date:'n' }}">回月曆</a>
+
+        <a class="btn btn-outline-secondary btn-sm"
+           href="{% url 'planner_reminders' %}">
+          提醒
+          {% if reminder_count|default:0 > 0 %}
+            <span class="badge text-bg-danger ms-1">{{ reminder_count }}</span>
+          {% endif %}
+        </a>
+
+        <a class="btn btn-primary btn-sm" href="{% url 'create' %}">新增事件</a>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+              <tr>
+                <th style="min-width:140px;">時間</th>
+                <th style="min-width:140px;">寵物</th>
+                <th style="min-width:140px;">類型</th>
+                <th>標題</th>
+                <th style="min-width:120px;">狀態</th>
+                <th class="text-end" style="min-width:160px;">操作</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for e in events %}
+                <tr>
+                  <td class="fw-semibold">
+                    {% if e.all_day %}
+                      全天
+                    {% else %}
+                      {{ e.start_at|date:"H:i" }}{% if e.end_at %}–{{ e.end_at|date:"H:i" }}{% endif %}
+                    {% endif %}
+                    {% if e.remind_at %}
+                      <div class="text-muted small mt-1">提醒：{{ e.remind_at|date:"H:i" }}</div>
+                    {% endif %}
+                  </td>
+
+                  <td>{% if e.pet %}{{ e.pet.name }}{% else %}—{% endif %}</td>
+
+                  <td>
+                    <span class="badge text-bg-light border">{{ e.get_type_display }}</span>
+                  </td>
+
+                  <td>
+                    <a class="text-decoration-none" href="{% url 'detail' e.pk %}">
+                      <span class="{% if e.status == 'done' %}text-decoration-line-through text-muted{% endif %}">
+                        {{ e.title }}
+                      </span>
+                    </a>
+                  </td>
+
+                  <td>
+                    {% if e.status == "planned" %}<span class="badge text-bg-warning">未完成</span>{% endif %}
+                    {% if e.status == "done" %}<span class="badge text-bg-success">已完成</span>{% endif %}
+                    {% if e.status == "canceled" %}<span class="badge text-bg-secondary">已取消</span>{% endif %}
+                  </td>
+
+                  <td class="text-end">
+                    <div class="btn-group btn-group-sm" role="group">
+                      <a class="btn btn-outline-primary" href="{% url 'update' e.pk %}">編輯</a>
+                      <a class="btn btn-outline-danger" href="{% url 'delete' e.pk %}">刪除</a>
+                    </div>
+                  </td>
+                </tr>
+
+              {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center text-muted py-5">這天沒有事件</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

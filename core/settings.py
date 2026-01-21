@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'pets',
     'records',
     'expenses',
+    'planner',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'planner.context_processors.reminder_context', # 加入自訂的 context processor
             ],
         },
     },

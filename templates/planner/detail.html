@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}事件詳情{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-2 mb-3">
+        <div>
+          <h1 class="h4 fw-semibold mb-0">事件詳情</h1>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+          <a class="btn btn-outline-secondary btn-sm"
+             href="{% url 'month' %}?year={{ event.start_at|date:'Y' }}&month={{ event.start_at|date:'n' }}">回月曆</a>
+
+          <a class="btn btn-outline-secondary btn-sm"
+             href="{% url 'planner_reminders' %}">
+            提醒
+            {% if reminder_count|default:0 > 0 %}
+              <span class="badge text-bg-danger ms-1">{{ reminder_count }}</span>
+            {% endif %}
+          </a>
+
+          <a class="btn btn-outline-primary btn-sm" href="{% url 'update' event.pk %}">編輯</a>
+          <a class="btn btn-outline-danger btn-sm" href="{% url 'delete' event.pk %}">刪除</a>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-12">
+          <div class="card shadow-sm border-0">
+            <div class="card-body small">
+              <div class="text-muted mb-1">寵物</div>
+              <div class="fw-semibold">{% if event.pet %}{{ event.pet.name }}{% else %}—{% endif %}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-12">
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <div class="mb-2">
+                <div class="text-muted small">標題</div>
+                <div class="h5 fw-semibold mb-0">{{ event.title }}</div>
+              </div>
+
+              <div class="row g-3 small mt-1">
+                <div class="col-12 col-md-6">
+                  <div class="text-muted">類型</div>
+                  <div class="fw-semibold">{{ event.get_type_display }}</div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="text-muted">狀態</div>
+                  <div class="fw-semibold">{{ event.get_status_display }}</div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="text-muted">時間</div>
+                  <div class="fw-semibold">
+                    {% if event.all_day %}
+                      全天
+                    {% else %}
+                      {{ event.start_at|date:"Y/m/d H:i" }}
+                      {% if event.end_at %} – {{ event.end_at|date:"Y/m/d H:i" }}{% endif %}
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="text-muted">提醒</div>
+                  <div class="fw-semibold">
+                    {% if event.remind_at %}
+                      {{ event.remind_at|date:"Y/m/d H:i" }}
+                    {% else %}
+                      —
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="text-muted">說明</div>
+                  <div class="fw-semibold">
+                    {% if event.description %}{{ event.description|linebreaksbr }}{% else %}—{% endif %}
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="text-muted">備註</div>
+                  <div class="fw-semibold">
+                    {% if event.note %}{{ event.note|linebreaksbr }}{% else %}—{% endif %}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

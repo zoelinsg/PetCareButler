@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}提醒{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-2 mb-3">
+      <div>
+        <h1 class="h4 fw-semibold mb-1">提醒</h1>
+        <div class="text-muted small">已到提醒時間、尚未標記已讀的事件</div>
+      </div>
+
+      <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'month' %}">回月曆</a>
+        <a class="btn btn-primary btn-sm" href="{% url 'create' %}">新增事件</a>
+
+        <form method="post" action="{% url 'planner_reminders_mark_all' %}" class="d-inline">
+          {% csrf_token %}
+          <button class="btn btn-outline-secondary btn-sm" type="submit"
+            {% if not events %}disabled{% endif %}>
+            全部標記已讀
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+              <tr>
+                <th style="min-width:160px;">提醒時間</th>
+                <th style="min-width:160px;">事件時間</th>
+                <th style="min-width:140px;">寵物</th>
+                <th style="min-width:120px;">類型</th>
+                <th>標題</th>
+                <th class="text-end" style="min-width:180px;">操作</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for e in events %}
+                <tr>
+                  <td class="fw-semibold">{{ e.remind_at|date:"Y/m/d H:i" }}</td>
+
+                  <td>
+                    {% if e.all_day %}
+                      {{ e.start_at|date:"Y/m/d" }}（全天）
+                    {% else %}
+                      {{ e.start_at|date:"Y/m/d H:i" }}
+                      {% if e.end_at %}–{{ e.end_at|date:"H:i" }}{% endif %}
+                    {% endif %}
+                  </td>
+
+                  <td>{{ e.pet.name }}</td>
+
+                  <td>
+                    <span class="badge text-bg-light border">{{ e.get_type_display }}</span>
+                  </td>
+
+                  <td>
+                    <a class="text-decoration-none" href="{% url 'detail' e.pk %}">
+                      {{ e.title }}
+                    </a>
+                  </td>
+
+                  <td class="text-end">
+                    <div class="btn-group btn-group-sm" role="group">
+                      <a class="btn btn-outline-primary" href="{% url 'detail' e.pk %}">查看</a>
+                      <a class="btn btn-outline-secondary"
+                         href="{% url 'month' %}?year={{ e.start_at|date:'Y' }}&month={{ e.start_at|date:'n' }}">
+                        回該月
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+
+              {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center text-muted py-5">目前沒有提醒</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
