@@ -46,6 +46,8 @@ python manage.py startapp photos
 python manage.py startapp pets
 python manage.py startapp records
 python manage.py startapp expenses
+python manage.py startapp planner
+python manage.py startapp dashboard
 ```
 #### 資料庫與啟動
 - 建立超級使用者
@@ -120,3 +122,7 @@ python manage.py runserver
 - 行程刪除
 - 提醒列表
 - 提醒全部標記已讀
+
+- 儀表板顯示今日提醒
+- 儀表板顯示今日行程
+- 儀表板顯示本月開支

@@ -2,66 +2,21 @@
 {% block title %}寵物養育管家{% endblock %}
 
 {% block content %}
-<section class="py-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-10 text-center">
-      <h1 class="display-6 fw-semibold mb-3">寵物養育管家</h1>
-      <p class="lead text-muted mb-4">
-        寵物資料、日常生活、開支與相片集中管理；健康管理（醫療行事曆 / 儀表板）以獨立 App 擴充。
-      </p>
+<div class="container py-5">
 
-      <div class="d-flex justify-content-center gap-2 flex-wrap mb-4">
-        <a class="btn btn-primary" href="{% url 'pets_list' %}">寵物管理</a>
-        <a class="btn btn-primary" href="{% url 'care_record_list' %}">日常生活</a>
-        <a class="btn btn-primary" href="{% url 'expense_list' %}">日常開支</a>
-        <a class="btn btn-outline-primary" href="{% url 'photo_list' %}">相片管理</a>
-      </div>
-
-      <div class="row g-3 text-start">
-        <div class="col-12 col-md-6 col-lg-3">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body">
-              <div class="fw-semibold mb-2">日常生活</div>
-              <div class="text-muted small mb-3">飲水、飯量、體重、排便、運動、用藥與備註。</div>
-              <a class="btn btn-sm btn-outline-primary" href="{% url 'care_record_create' %}">新增記錄</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-3">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body">
-              <div class="fw-semibold mb-2">日常開支</div>
-              <div class="text-muted small mb-3">單純記錄開支與分類，後續可接儀表板做統計。</div>
-              <a class="btn btn-sm btn-outline-primary" href="{% url 'expense_create' %}">新增開支</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-3">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body">
-              <div class="fw-semibold mb-2">健康管理</div>
-              <div class="text-muted small mb-3">醫療行事曆與提醒（獨立 App）。</div>
-              <a class="btn btn-sm btn-outline-primary" href="{% url 'month' %}">
-                醫療行事曆
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-3">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body">
-              <div class="fw-semibold mb-2">公共資訊</div>
-              <div class="text-muted small mb-3">遺失啟示、認養公告、收容所、動保單位。</div>
-              <a class="btn btn-sm btn-outline-primary" href="{% url 'lost-notices' %}">前往</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
+  <div class="text-center mb-4">
+    <h1 class="display-6 fw-semibold mb-3">寵物養育管家</h1>
   </div>
-</section>
+
+  <div class="d-flex justify-content-center gap-2 flex-wrap mb-4">
+    <a class="btn btn-primary" href="{% url 'pets_list' %}">寵物管理</a>
+    <a class="btn btn-primary" href="{% url 'care_record_list' %}">日常生活</a>
+    <a class="btn btn-primary" href="{% url 'expense_list' %}">日常開支</a>
+    <a class="btn btn-primary" href="{% url 'photo_list' %}">相片管理</a>
+    <a class="btn btn-primary" href="{% url 'month' %}">行程管理</a>
+    <a class="btn btn-primary" href="{% url 'dashboard' %}">看儀表板</a>
+    <a class="btn btn-primary" href="{% url 'public-shelters' %}">查收容所</a>
+  </div>
+
+</div>
 {% endblock %}

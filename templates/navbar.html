@@ -61,7 +61,7 @@
 
             <li>
               <a class="dropdown-item d-flex justify-content-between align-items-center"
-                href="{% url 'planner_reminders' %}">
+                 href="{% url 'planner_reminders' %}">
                 提醒
                 {% if reminder_count|default:0 > 0 %}
                   <span class="badge text-bg-danger">{{ reminder_count }}</span>
@@ -72,9 +72,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
-            儀表板（開發中）
-          </a>
+          <a class="nav-link" href="{% url 'dashboard' %}">儀表板</a>
         </li>
 
         <li class="nav-item dropdown">

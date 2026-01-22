@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}儀表板{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-2 mb-3">
+    <div>
+      <h1 class="h4 fw-semibold mb-1">儀表板</h1>
+      <div class="text-muted small">今日提醒 / 今日行程 / 本月開支</div>
+    </div>
+
+    <div class="d-flex gap-2 flex-wrap">
+      <a class="btn btn-outline-secondary btn-sm" href="{% url 'month' %}">回行事曆</a>
+      <a class="btn btn-primary btn-sm" href="{% url 'create' %}">新增行程</a>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12 col-lg-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <div class="text-muted small">今日提醒（未讀）</div>
+              <div class="display-6 fw-semibold mb-0">{{ reminders_count }}</div>
+            </div>
+            <a class="btn btn-outline-secondary btn-sm" href="{% url 'planner_reminders' %}">查看</a>
+          </div>
+          <hr class="my-3">
+          {% if reminders %}
+            <ul class="list-unstyled mb-0 small">
+              {% for e in reminders|slice:":5" %}
+                <li class="mb-2">
+                  <div class="fw-semibold">{{ e.title }}</div>
+                  <div class="text-muted">
+                    {% if e.remind_at %}{{ e.remind_at|date:"m/d H:i" }}{% else %}—{% endif %}
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <div class="text-muted small">目前沒有提醒</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <div class="text-muted small">今日行程（未完成）</div>
+              <div class="display-6 fw-semibold mb-0">{{ today_events_count }}</div>
+            </div>
+            <a class="btn btn-outline-secondary btn-sm" href="{% url 'month' %}">查看</a>
+          </div>
+          <hr class="my-3">
+          {% if today_events %}
+            <ul class="list-unstyled mb-0 small">
+              {% for e in today_events|slice:":5" %}
+                <li class="mb-2">
+                  <a class="text-decoration-none" href="{% url 'detail' e.pk %}">
+                    <div class="fw-semibold">{{ e.title }}</div>
+                  </a>
+                  <div class="text-muted">
+                    {% if e.start_at %}{{ e.start_at|date:"m/d H:i" }}{% else %}—{% endif %}
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <div class="text-muted small">今天沒有未完成行程</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <div class="text-muted small">本月總開支</div>
+          <div class="display-6 fw-semibold mb-0">{{ month_total_expense|floatformat:0 }}</div>
+          <div class="text-muted small mt-1">（會隨你填的開支資料累加）</div>
+          <hr class="my-3">
+          <a class="btn btn-outline-secondary btn-sm" href="{% url 'expense_list' %}">前往開支列表</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
