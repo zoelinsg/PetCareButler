@@ -1,6 +1,7 @@
 # Pet Care
 
 - 以 Django Template 為主的寵物照護管理專案，包含寵物資料、日常紀錄、開支紀錄、相片管理，以及資料爬取與搜尋等功能。
+---
 
 ## 專案呈現
 - **[說明簡報](https://docs.google.com/presentation/d/1hmswIjc709DnCZP5JWac4fqHxKPdR7MuYtJBKAgw95Y/edit?usp=drive_link)**
@@ -73,7 +74,7 @@ python manage.py runserver
 
 ---
 
-#### 專案功能
+## 專案功能
 - 使用者註冊
 - 使用者登入
 - 使用者登出
