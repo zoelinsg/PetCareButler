@@ -19,30 +19,30 @@
 
 ## 環境部署
 
-### 安裝 Poetry
+- 安裝 Poetry
 ```bash
 pip install poetry
 ```
 
-### 初始化專案並建立虛擬環境
+- 初始化專案並建立虛擬環境
 ```bash
 poetry init
 poetry install
 poetry shell
 ```
 
-### 安裝 Django 與常用套件
+- 安裝 Django 與常用套件
 ```bash
 poetry add django
 poetry add pillow requests
 ```
 
-### 建立 Django 專案與 Apps
-#### 建立 Django 專案
+- 建立 Django 專案
 ```bash
 django-admin startproject core .
 ```
-#### 建立 Apps
+
+- 建立 Apps
 ```bash
 python manage.py startapp users
 python manage.py startapp datahub
@@ -53,11 +53,12 @@ python manage.py startapp expenses
 python manage.py startapp planner
 python manage.py startapp dashboard
 ```
-#### 資料庫與啟動
+
 - 建立超級使用者
 ```bash
 python manage.py createsuperuser
 ```
+
 - 建立遷移檔案
 ```bash
 python manage.py makemigrations
@@ -67,6 +68,7 @@ python manage.py makemigrations
 ```bash
 python manage.py migrate
 ```
+
 - 啟動開發伺服器
 ```bash
 python manage.py runserver
