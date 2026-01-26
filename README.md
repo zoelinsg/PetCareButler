@@ -4,7 +4,7 @@
 ---
 
 ## 專案呈現
-- **[說明簡報](https://docs.google.com/presentation/d/1hmswIjc709DnCZP5JWac4fqHxKPdR7MuYtJBKAgw95Y/edit?usp=drive_link)**
+- **[說明PPT](https://docs.google.com/presentation/d/1hmswIjc709DnCZP5JWac4fqHxKPdR7MuYtJBKAgw95Y/edit?usp=drive_link)**
 - **[Demo影片](https://www.youtube.com/watch?v=R1xDsy_aJu8)**
 ---
 
