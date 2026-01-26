@@ -2,6 +2,9 @@
 
 - 以 Django Template 為主的寵物照護管理專案，包含寵物資料、日常紀錄、開支紀錄、相片管理，以及資料爬取與搜尋等功能。
 
+## 專案呈現
+- **[說明簡報](https://docs.google.com/presentation/d/1hmswIjc709DnCZP5JWac4fqHxKPdR7MuYtJBKAgw95Y/edit?usp=drive_link)**
+- **[Demo影片](https://www.youtube.com/watch?v=R1xDsy_aJu8)**
 ---
 
 ## 專案環境與工具
